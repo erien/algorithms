@@ -56,27 +56,16 @@ int* read_table(const char *path, int *amount) {
     return tab;
 }
 
-static void _merge_sort(int *tab, int start, int end, int *buffer) {
-    // Sort the provided table from start to end. Allocated buffer must be
-    // provided to store the sorted data
+static void _merge(int *tab, int start, int end, int *buffer) {
+    // Merges table
     //
     // Args:
-    //   tab: Table of ints to sort
+    //   tab: table to merge
     //   start: start of the table
-    //   end: end of table (note, range is [start; end)
-    //   buffer: Allocated buffer. Should be at least the same size as tab
-
-    // We only have one element? Nothing to sort...
-    if (end - start < 2) {
-        return;
-    }
-
-    // Divide and conquer!
-    int half = (end + start) / 2;
-    _merge_sort(tab, start, half, buffer);
-    _merge_sort(tab, half, end, buffer);
-
+    //   end: end of the table
+    //   buffer: buffer to store temporary values
     int left = start;
+    int half = (end + start) / 2;
     int right = half;
     int bufPtr = start;
 
@@ -101,6 +90,28 @@ static void _merge_sort(int *tab, int start, int end, int *buffer) {
     for (left = start; left < end; ++left) {
         tab[left] = buffer[left];
     }
+}
+
+static void _merge_sort(int *tab, int start, int end, int *buffer) {
+    // Sort the provided table from start to end. Allocated buffer must be
+    // provided to store the sorted data
+    //
+    // Args:
+    //   tab: Table of ints to sort
+    //   start: start of the table
+    //   end: end of table (note, range is [start; end)
+    //   buffer: Allocated buffer. Should be at least the same size as tab
+
+    // We only have one element? Nothing to sort...
+    if (end - start < 2) {
+        return;
+    }
+
+    // Divide and conquer!
+    int half = (end + start) / 2;
+    _merge_sort(tab, start, half, buffer);
+    _merge_sort(tab, half, end, buffer);
+    _merge(tab, start, end, buffer);
 }
 
 void merge_sort(int *tab, int amount) {
