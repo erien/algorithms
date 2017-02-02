@@ -48,12 +48,46 @@ int* read_table(const char *path, int *amount) {
     return tab;
 }
 
-static void _merge_sort(int *tab, int start, int end) {
-    // The range is [start; end)
+static void _merge_sort(int *tab, int start, int end, int *buffer) {
+    if (end - start < 2) {
+        return;
+    }
+
+    int half = (end + start) / 2;
+    _merge_sort(tab, start, half, buffer);
+    _merge_sort(tab, half, end, buffer);
+
+    int left = start;
+    int right = half;
+    int bufPtr = start;
+
+    while ((left < half) && (right < end)) {
+        if (tab[left] < tab[right]) {
+            buffer[bufPtr++] = tab[left++];
+        } else {
+            buffer[bufPtr++] = tab[right++];
+        }
+    }
+
+    while (left < half) {
+        buffer[bufPtr++] = tab[left++];
+    }
+
+    while (right < end) {
+        buffer[bufPtr++] = tab[right++];
+    }
+
+    for (left = start; left < end; ++left) {
+        tab[left] = buffer[left];
+    }
 }
 
 void merge_sort(int *tab, int amount) {
-    _merge_sort(tab, 0, amount);
+    int *buffer = (int *)malloc(sizeof(int) * amount);
+
+    _merge_sort(tab, 0, amount, buffer);
+
+    free(buffer);
 }
 
 int compare_table(int *tab1, int *tab2, int amount) {
