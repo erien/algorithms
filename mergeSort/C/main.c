@@ -11,6 +11,14 @@ int* read_table(const char *path, int *amount) {
     // Reads the contents of an unsorted table and returns pointer to
     // User must provide amount argument, where the amount of numbers to sort
     // will be stored
+    //
+    // Args:
+    //   path: Path to file to open
+    //   amount: Will store the size of the returned table of ints
+    //
+    // Returns:
+    //   Pointer to allocated table filled with unsorted ints. If 0, than
+    //   reading file has failed.
     FILE *f = fopen(path, "r");
     if (!f) {
         printf("Failed to open file: %s\n", path);
@@ -49,10 +57,21 @@ int* read_table(const char *path, int *amount) {
 }
 
 static void _merge_sort(int *tab, int start, int end, int *buffer) {
+    // Sort the provided table from start to end. Allocated buffer must be
+    // provided to store the sorted data
+    //
+    // Args:
+    //   tab: Table of ints to sort
+    //   start: start of the table
+    //   end: end of table (note, range is [start; end)
+    //   buffer: Allocated buffer. Should be at least the same size as tab
+
+    // We only have one element? Nothing to sort...
     if (end - start < 2) {
         return;
     }
 
+    // Divide and conquer!
     int half = (end + start) / 2;
     _merge_sort(tab, start, half, buffer);
     _merge_sort(tab, half, end, buffer);
@@ -61,6 +80,7 @@ static void _merge_sort(int *tab, int start, int end, int *buffer) {
     int right = half;
     int bufPtr = start;
 
+    // Copy data into buffer, it will be sorted data
     while ((left < half) && (right < end)) {
         if (tab[left] < tab[right]) {
             buffer[bufPtr++] = tab[left++];
@@ -77,12 +97,18 @@ static void _merge_sort(int *tab, int start, int end, int *buffer) {
         buffer[bufPtr++] = tab[right++];
     }
 
+    // Now copy the sorted data to original table
     for (left = start; left < end; ++left) {
         tab[left] = buffer[left];
     }
 }
 
 void merge_sort(int *tab, int amount) {
+    // Calls the underlying mergeSort algorithm and sorts the provided table
+    //
+    // Args:
+    //   tab: Table of ints to sort
+    //   amount: amount of entries in the table
     int *buffer = (int *)malloc(sizeof(int) * amount);
 
     _merge_sort(tab, 0, amount, buffer);
@@ -91,6 +117,16 @@ void merge_sort(int *tab, int amount) {
 }
 
 int compare_table(int *tab1, int *tab2, int amount) {
+    // Compares two tables, it is quietly assumed, that both have the same
+    // amount of entries. If there are is a single diffirence, it is pointed out
+    //
+    // Args:
+    //   tab1: First table of ints to compare
+    //   tab2: Second table of ints to compare
+    //   amount: Amount of entries in the table
+    //
+    // Returns:
+    //   0 if tables are the same, -1 if not
     int i;
     for (i = 0; i < amount; ++i) {
         if (tab1[i] != tab2[i]) {
@@ -117,6 +153,7 @@ int main(int argc, char *argv[]) {
 
     if (sorted == 0) {
         printf("Failed to read table from file: %s\n", PATH_SORTED);
+        free(to_sort);
         return errno;
     }
 
@@ -124,8 +161,13 @@ int main(int argc, char *argv[]) {
 
     if (compare_table(to_sort, sorted, amount) != 0) {
         printf("Table wasn't sorted correctly!\n");
+        free(to_sort);
+        free(sorted);
         return -1;
     }
+
+    free(to_sort);
+    free(sorted);
 
     printf("Table sorted correctly!\n");
     return 0;
