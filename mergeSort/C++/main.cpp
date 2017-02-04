@@ -10,11 +10,11 @@ using std::ifstream;
 using std::string;
 
 // Contains entries that need to be sorted
-#define PATH_TO_SORT "../toSort.txt"
+const string PATH_TO_SORT = "../toSort.txt";
 // Contains already sorted entries
-#define PATH_SORTED "../sorted.txt"
+const string PATH_SORTED = "../sorted.txt";
 
-int read_table(const char *path, vector<int> &tab) {
+int read_table(const string &path, vector<int> &tab) {
     // Reads the contents of an unsorted table and puts it into vector
     //
     // Args:
@@ -124,7 +124,7 @@ int compare_table(vector<int> &tab1, vector<int> &tab2) {
     //
     // Returns:
     //   0 if vectors are the same
-    int i;
+    unsigned int i;
     for (i = 0; i < tab1.size(); ++i) {
         if (tab1[i] != tab2[i]) {
             cout << "Diffirence at: " << i << endl;
