@@ -11,6 +11,28 @@ import (
 const file_to_sort = "../toSort.txt"
 const file_sorted = "../sorted.txt"
 
+func cmpArrays(a []int, b []int) bool {
+	if a == nil && b == nil {
+		return true
+	}
+
+	if a == nil || b == nil {
+		return false
+	}
+
+	if len(a) != len(b) {
+		return false
+	}
+
+	for i := range a {
+		if a[i] != b[i] {
+			return false
+		}
+	}
+
+	return true
+}
+
 func readNumber(path string) []int {
 	file, err := os.Open(path)
 
@@ -42,14 +64,12 @@ func readNumber(path string) []int {
 
 func main() {
 	toSort := readNumber(file_to_sort)
-	if toSort[0] > 1 {
-		fmt.Println("done")
-	}
-
 	sorted := readNumber(file_sorted)
-	if sorted[0] != 1 {
-		fmt.Println("done")
+
+	if cmpArrays(toSort, sorted) == false {
+		fmt.Println("Table wasn't sorted correctly")
+		return
 	}
 
-	fmt.Println("Table wasn't sorted correctly")
+	fmt.Println("Table was sorted correctly")
 }
