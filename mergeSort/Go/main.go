@@ -8,10 +8,21 @@ import (
 	"strconv"
 )
 
-const file_to_sort = "../toSort.txt"
-const file_sorted = "../sorted.txt"
+// File that contains data to be sorted
+const file_to_sort = "../../toSort.txt"
+
+// File with already sorted data
+const file_sorted = "../../sorted.txt"
 
 func cmpArrays(a []int, b []int) bool {
+	//Compares two arrays. Returns true if they are the same, false otherwise
+	//
+	// Args:
+	//   a: First table of integers
+	//   b: Second table of integers
+	//
+	// Returns:
+	//   True if tables are the same, false otherwise
 	if a == nil && b == nil {
 		return true
 	}
@@ -34,6 +45,13 @@ func cmpArrays(a []int, b []int) bool {
 }
 
 func readNumbers(path string) []int {
+	// Reads data (integers) from provided file, puts them into a slice
+	// and retuns it
+	//
+	// Args:
+	//   path: File to be opened
+	// Returns:
+	//    Slice filled with numbers read from file
 	file, err := os.Open(path)
 
 	if err != nil {
@@ -63,6 +81,14 @@ func readNumbers(path string) []int {
 }
 
 func _merge(toSort []int, start int, half int, end int, buffer []int) {
+	// Merges two already sorted halves of a table
+	//
+	// Args:
+	//   toSort: table to be sorted
+	//   start: start of the first half
+	//   half: start of the second half
+	//   end: end of the second half
+	//   buffer: Buffer for operations
 	left := start
 	right := half
 	i := start
@@ -99,6 +125,13 @@ func _merge(toSort []int, start int, half int, end int, buffer []int) {
 }
 
 func _mergeSort(toSort []int, start int, end int, buffer []int) {
+	// Performs the merge sort algorithm
+	//
+	// Args:
+	//   toSort: Table to be sorted
+	//   start: start of the table
+	//   end: end of the table
+	//   buffer: Buffer for operations
 	if end-start <= 1 {
 		return
 	}
@@ -110,6 +143,10 @@ func _mergeSort(toSort []int, start int, end int, buffer []int) {
 }
 
 func mergeSort(toSort []int) {
+	// Performs merge sort, user level function
+	//
+	// Args:
+	//   toSort: table to be sorted
 	buffer := make([]int, len(toSort))
 	_mergeSort(toSort, 0, len(toSort), buffer)
 }

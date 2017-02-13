@@ -3,17 +3,18 @@
 #include <errno.h>
 
 // Contains entries that need to be sorted
-#define PATH_TO_SORT "../toSort.txt"
+#define PATH_TO_SORT "../../toSort.txt"
 // Contains already sorted entries
-#define PATH_SORTED "../sorted.txt"
+#define PATH_SORTED "../../sorted.txt"
 
 int* read_table(const char *path, int *amount) {
-    // Reads the contents of an unsorted table and returns pointer to
+    // Reads the contents of an unsorted table and returns pointer to it.
     // User must provide amount argument, where the amount of numbers to sort
-    // will be stored
+    // will be stored (that amount is read from  the file)
     //
     // Args:
-    //   path: Path to file to open
+    //   path: Path to file to open. First two lines are comments,
+    //         third line is the amount of numbers to sort
     //   amount: Will store the size of the returned table of ints
     //
     // Returns:
@@ -78,15 +79,17 @@ static void _merge(int *tab, int start, int end, int *buffer) {
         }
     }
 
+    // Copy the leftovers
     while (left < half) {
         buffer[bufPtr++] = tab[left++];
     }
 
+    // Copy the leftovers
     while (right < end) {
         buffer[bufPtr++] = tab[right++];
     }
 
-    // Now copy the sorted data to original table
+    // Now copy the sorted data back to original table
     for (left = start; left < end; ++left) {
         tab[left] = buffer[left];
     }

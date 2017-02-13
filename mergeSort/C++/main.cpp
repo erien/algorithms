@@ -10,9 +10,9 @@ using std::ifstream;
 using std::string;
 
 // Contains entries that need to be sorted
-const string PATH_TO_SORT = "../toSort.txt";
+const string PATH_TO_SORT = "../../toSort.txt";
 // Contains already sorted entries
-const string PATH_SORTED = "../sorted.txt";
+const string PATH_SORTED = "../../sorted.txt";
 
 int read_table(const string &path, vector<int> &tab) {
     // Reads the contents of an unsorted table and puts it into vector
@@ -69,10 +69,12 @@ static void _merge(vector<int> &tab, int start, int end, vector<int> &buffer) {
         }
     }
 
+    // Copy the leftovers
     while (left < half) {
         buffer[bufPtr++] = tab[left++];
     }
 
+    // Copy the leftovers
     while (right < end) {
         buffer[bufPtr++] = tab[right++];
     }

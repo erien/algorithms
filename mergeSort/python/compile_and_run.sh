@@ -1,2 +1,2 @@
 #!/bin/bash
-time python main.py
+time python3 main.py
