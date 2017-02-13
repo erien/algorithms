@@ -80,9 +80,55 @@ static int compare_table(int *tab1, int *tab2, int amount) {
     return 0;
 }
 
+static void _quick_sort(int *tab, int start, int end) {
+    // Quicks sorts the provided table in place. Range is (start; end]
+    //
+    // Args:
+    //   tab: point to the table filled with integers
+    //   start: start of the table to sort
+    //   end: end of the table to sort
+
+    if (end - start < 2) {
+        return;
+    }
+
+    // Store the mid value used for comparison
+    int mid = tab[start];
+    // The first free position where values lesser than mid might be put
+    int less = start + 1;
+    // Guess what this is for...
+    int temp;
+    // ptr points to the first position we can put data
+    for (int ptr = start + 1; ptr < end; ++ptr) {
+        if (tab[ptr] < mid) {
+            temp = tab[less];
+            tab[less] = tab[ptr];
+            tab[ptr] = temp;
+            ++less;
+        }
+        // If the value is greater then we just move forward
+        else {
+        }
+    }
+
+    // This will cause 'less' to point at the last of the small numbers
+    less -= 1;
+    tab[start] = tab[less];
+    tab[less] = mid;
+    // After the swap 'less' point now to the middle
+    _quick_sort(tab, start, less);
+    // We add plus one, because less is now the middle in place
+    _quick_sort(tab, less + 1, end);
+
+}
+
 void quick_sort(int *tab, int amount) {
-    // Performs quick sort algorithm on provided table
-    return;
+    // Quick sorts the provided table in place
+    //
+    // Args:
+    //   tab: point to the table filled with integers
+    //   amount: size of the table
+    _quick_sort(tab, 0, amount);
 }
 
 
